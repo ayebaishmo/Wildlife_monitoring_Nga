@@ -1,10 +1,10 @@
-const CSV_PATH = "wildLife.csv";
+const CSV_PATH = "data.csv"; // CSV file in the same folder
 let rawData = [];
 let filteredData = [];
 let adultsChart, nestsChart, totalChart, seenPieChart;
 
 // Load CSV
-function loadCSV() {
+async function loadCSV() {
   return new Promise((resolve, reject) => {
     Papa.parse(CSV_PATH, {
       download: true,
@@ -47,7 +47,6 @@ function initFilters(data) {
     opt.textContent = s;
     speciesSel.appendChild(opt);
   });
-
   [...observerSet].sort().forEach(o => {
     const opt = document.createElement("option");
     opt.value = o;
@@ -60,10 +59,14 @@ function initFilters(data) {
 function applyFilters() {
   const species = document.getElementById("speciesFilter").value;
   const observer = document.getElementById("observerFilter").value;
+  const search = document.getElementById("tableSearch").value.toLowerCase();
 
   filteredData = rawData.filter(d =>
     (species === "all" || d.Species === species) &&
-    (observer === "all" || d.Observer === observer)
+    (observer === "all" || d.Observer === observer) &&
+    (d.Species.toLowerCase().includes(search) ||
+     d.Observer.toLowerCase().includes(search) ||
+     d.Comment.toLowerCase().includes(search))
   );
 
   updateCharts(filteredData);
@@ -76,40 +79,42 @@ function updateCharts(data) {
   const adults = data.map(d => d.NoAdults);
   const nests = data.map(d => d.NoNests);
   const totals = data.map(d => d.Total);
+  const seenCount = data.filter(d => d.Total > 0).length;
+  const notSeenCount = data.filter(d => d.Total === 0).length;
+
+  // Destroy previous charts if exist
+  if (adultsChart) adultsChart.destroy();
+  if (nestsChart) nestsChart.destroy();
+  if (totalChart) totalChart.destroy();
+  if (seenPieChart) seenPieChart.destroy();
 
   // Adults chart
-  if (adultsChart) adultsChart.destroy();
   adultsChart = new Chart(document.getElementById("adultsChart"), {
     type: "bar",
-    data: { labels, datasets: [{ label: "No. Adults", data: adults, backgroundColor: "rgba(54,162,235,0.6)" }] },
-    options: { responsive: true }
+    data: { labels, datasets: [{ label: "Adults", data: adults, backgroundColor: "#3b82f6" }] },
+    options: { responsive: true, plugins: { legend: { display: false } } }
   });
 
   // Nests chart
-  if (nestsChart) nestsChart.destroy();
   nestsChart = new Chart(document.getElementById("nestsChart"), {
     type: "bar",
-    data: { labels, datasets: [{ label: "No. Nests", data: nests, backgroundColor: "rgba(255,99,132,0.6)" }] },
-    options: { responsive: true }
+    data: { labels, datasets: [{ label: "Nests", data: nests, backgroundColor: "#ef4444" }] },
+    options: { responsive: true, plugins: { legend: { display: false } } }
   });
 
-  // Total chart
-  if (totalChart) totalChart.destroy();
+  // Total line chart
   totalChart = new Chart(document.getElementById("totalChart"), {
     type: "line",
-    data: { labels, datasets: [{ label: "Total", data: totals, borderColor: "rgba(75,192,192,1)", fill: false }] },
+    data: { labels, datasets: [{ label: "Total", data: totals, borderColor: "#10b981", backgroundColor: "#6ee7b7", fill: false, tension: 0.3 }] },
     options: { responsive: true }
   });
 
-  // Seen vs Not Seen pie chart
-  const seenCount = data.filter(d => d.Total > 0).length;
-  const notSeenCount = data.filter(d => d.Total === 0).length;
-  if (seenPieChart) seenPieChart.destroy();
+  // Seen vs Not Seen Pie
   seenPieChart = new Chart(document.getElementById("seenPieChart"), {
     type: "pie",
     data: {
       labels: ["Seen", "Not Seen"],
-      datasets: [{ data: [seenCount, notSeenCount], backgroundColor: ["#4ade80", "#f87171"] }]
+      datasets: [{ data: [seenCount, notSeenCount], backgroundColor: ["#22c55e", "#f87171"] }]
     },
     options: { responsive: true }
   });
@@ -134,9 +139,12 @@ function buildTable(data) {
     `;
     tbody.appendChild(tr);
   });
+
+  // Make table sortable
+  new Tablesort(document.getElementById("dataTable"));
 }
 
-// Export filtered CSV
+// Export CSV
 function exportCSV() {
   let csv = "Species,Date observed,Observer,No eggs,No of offspring’s,No of nests,No adults,Total,Comment\n";
   filteredData.forEach(r => {
@@ -151,7 +159,7 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
-// Init
+// Initialize dashboard
 document.addEventListener("DOMContentLoaded", async () => {
   await loadCSV();
   filteredData = rawData;
@@ -161,5 +169,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("speciesFilter").addEventListener("change", applyFilters);
   document.getElementById("observerFilter").addEventListener("change", applyFilters);
+  document.getElementById("tableSearch").addEventListener("input", applyFilters);
   document.getElementById("exportBtn").addEventListener("click", exportCSV);
 });

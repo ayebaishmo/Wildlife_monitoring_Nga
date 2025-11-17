@@ -5,47 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ngamba Island Wildlife Dashboard</title>
 
-<!-- TailwindCSS for styling -->
+<!-- TailwindCSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- PapaParse to read CSV -->
+<!-- PapaParse for CSV -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
+<!-- Sortable Table Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+
 <style>
-  body { background: #f5f7fa; }
-  .card { background: white; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  body { background: #f3f4f6; font-family: 'Inter', sans-serif; }
+  .card { background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  th { cursor: pointer; }
 </style>
 </head>
-<body class="min-h-screen p-6 font-sans">
+<body class="min-h-screen p-6">
 
-<h1 class="text-3xl font-bold mb-6">Ngamba Island Wildlife Dashboard</h1>
+<h1 class="text-4xl font-bold mb-6 text-center text-gray-800">Ngamba Island Wildlife Dashboard</h1>
 
 <!-- Filters -->
-<div class="flex gap-4 mb-6">
-  <select id="speciesFilter" class="p-2 border rounded">
+<div class="flex flex-col md:flex-row gap-4 mb-6 justify-center items-center">
+  <select id="speciesFilter" class="p-2 border rounded shadow">
     <option value="all">All Species</option>
   </select>
-  <select id="observerFilter" class="p-2 border rounded">
+  <select id="observerFilter" class="p-2 border rounded shadow">
     <option value="all">All Observers</option>
   </select>
-  <button id="exportBtn" class="bg-blue-600 text-white px-4 rounded">Export CSV</button>
+  <input type="text" id="tableSearch" placeholder="Search table..." class="p-2 border rounded shadow w-full md:w-64" />
+  <button id="exportBtn" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Export CSV</button>
 </div>
 
 <!-- Charts -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
   <div class="card">
-    <h2 class="text-xl font-semibold mb-2">No. of Adults by Species</h2>
+    <h2 class="text-xl font-semibold mb-2">Adults by Species</h2>
     <canvas id="adultsChart"></canvas>
   </div>
   <div class="card">
-    <h2 class="text-xl font-semibold mb-2">No. of Nests by Species</h2>
+    <h2 class="text-xl font-semibold mb-2">Nests by Species</h2>
     <canvas id="nestsChart"></canvas>
   </div>
   <div class="card">
-    <h2 class="text-xl font-semibold mb-2">Total Individuals by Species</h2>
+    <h2 class="text-xl font-semibold mb-2">Total Individuals</h2>
     <canvas id="totalChart"></canvas>
   </div>
   <div class="card">
@@ -55,21 +60,21 @@
 </div>
 
 <!-- Table -->
-<div class="card">
-  <h2 class="text-xl font-semibold mb-2">Observation Records</h2>
+<div class="card mb-8">
+  <h2 class="text-xl font-semibold mb-4">Observation Records</h2>
   <div class="overflow-x-auto">
-    <table id="dataTable" class="w-full border-collapse">
-      <thead>
-        <tr class="bg-gray-200">
-          <th class="border px-2 py-1">Species</th>
-          <th class="border px-2 py-1">Date Observed</th>
-          <th class="border px-2 py-1">Observer</th>
-          <th class="border px-2 py-1">No. Eggs</th>
-          <th class="border px-2 py-1">No. Offspring</th>
-          <th class="border px-2 py-1">No. Nests</th>
-          <th class="border px-2 py-1">No. Adults</th>
-          <th class="border px-2 py-1">Total</th>
-          <th class="border px-2 py-1">Comment</th>
+    <table id="dataTable" class="w-full border-collapse table-auto">
+      <thead class="bg-gray-200">
+        <tr>
+          <th>Species</th>
+          <th>Date Observed</th>
+          <th>Observer</th>
+          <th>No. Eggs</th>
+          <th>No. Offspring</th>
+          <th>No. Nests</th>
+          <th>No. Adults</th>
+          <th>Total</th>
+          <th>Comment</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -77,8 +82,10 @@
   </div>
 </div>
 
-<!-- Script -->
-<script src="script.js"></script>
+<footer class="text-center text-gray-500 mb-4">
+  Ngamba Island Wildlife Monitoring • Static Dashboard • Host on GitHub Pages
+</footer>
 
+<script src="script.js"></script>
 </body>
 </html>
