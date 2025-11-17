@@ -1,4 +1,4 @@
-const CSV_PATH = "data.csv"; // CSV file in the same folder
+const CSV_PATH = "wildLife.csv";
 let rawData = [];
 let filteredData = [];
 let adultsChart, nestsChart, totalChart, seenPieChart;
