@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ngamba Island Wildlife Dashboard</title>
+
+<!-- TailwindCSS for styling -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- PapaParse to read CSV -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+  body { background: #f5f7fa; }
+  .card { background: white; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+</style>
+</head>
+<body class="min-h-screen p-6 font-sans">
+
+<h1 class="text-3xl font-bold mb-6">Ngamba Island Wildlife Dashboard</h1>
+
+<!-- Filters -->
+<div class="flex gap-4 mb-6">
+  <select id="speciesFilter" class="p-2 border rounded">
+    <option value="all">All Species</option>
+  </select>
+  <select id="observerFilter" class="p-2 border rounded">
+    <option value="all">All Observers</option>
+  </select>
+  <button id="exportBtn" class="bg-blue-600 text-white px-4 rounded">Export CSV</button>
+</div>
+
+<!-- Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <div class="card">
+    <h2 class="text-xl font-semibold mb-2">No. of Adults by Species</h2>
+    <canvas id="adultsChart"></canvas>
+  </div>
+  <div class="card">
+    <h2 class="text-xl font-semibold mb-2">No. of Nests by Species</h2>
+    <canvas id="nestsChart"></canvas>
+  </div>
+  <div class="card">
+    <h2 class="text-xl font-semibold mb-2">Total Individuals by Species</h2>
+    <canvas id="totalChart"></canvas>
+  </div>
+  <div class="card">
+    <h2 class="text-xl font-semibold mb-2">Seen vs Not Seen</h2>
+    <canvas id="seenPieChart"></canvas>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+  <h2 class="text-xl font-semibold mb-2">Observation Records</h2>
+  <div class="overflow-x-auto">
+    <table id="dataTable" class="w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border px-2 py-1">Species</th>
+          <th class="border px-2 py-1">Date Observed</th>
+          <th class="border px-2 py-1">Observer</th>
+          <th class="border px-2 py-1">No. Eggs</th>
+          <th class="border px-2 py-1">No. Offspring</th>
+          <th class="border px-2 py-1">No. Nests</th>
+          <th class="border px-2 py-1">No. Adults</th>
+          <th class="border px-2 py-1">Total</th>
+          <th class="border px-2 py-1">Comment</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Script -->
+<script src="script.js"></script>
+
+</body>
+</html>

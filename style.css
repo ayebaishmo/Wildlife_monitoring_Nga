@@ -1,0 +1,47 @@
+/* :root{
+--bg:#f5f7fa;
+--card:#ffffff;
+--accent:#0e4d92;
+--muted:#6b7280;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0;
+font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+background:var(--bg);
+color:#111827;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+.site-header{background:var(--accent);color:white;padding:20px 0}
+.site-header h1{margin:0;font-size:1.5rem}
+.subtitle{opacity:.9;margin-top:6px}
+.main-grid{display:grid;grid-template-columns:280px 1fr;gap:20px;padding-top:20px}
+.controls{position:sticky;top:16px}
+.card{background:var(--card);border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(2,6,23,0.08)}
+.card h2{margin-top:0}
+.controls label{display:block;margin-top:12px;margin-bottom:6px;font-weight:600}
+.controls select,input{width:100%;padding:8px;border-radius:6px;border:1px solid #e5e7eb}
+.controls .controls-row{display:flex;gap:10px;margin-top:12px}
+.controls button{flex:1;padding:8px;border-radius:6px;background:var(--accent);color:white;border:0;cursor:pointer}
+.controls button#refreshBtn{background:#444}
+.stats-list{list-style:none;padding:0;margin:8px 0}
+.stats-list li{margin-bottom:6px}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.chart-card{padding:12px}
+.chart-card canvas{width:100% !important;height:320px !important}
+.table-area{grid-column:1/-1;margin-top:10px}
+.table-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.table-head input{width:300px;padding:8px;border-radius:6px;border:1px solid #e5e7eb}
+.table-wrap{overflow:auto;max-height:420px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;text-align:left;border-bottom:1px solid #eef2f7}
+th{position:sticky;top:0;background:white}
+.small{font-size:0.85rem;color:var(--muted)}
+.site-footer{padding:16px;text-align:center;color:var(--muted);margin-top:20px}
+
+
+@media (max-width:900px){
+.main-grid{grid-template-columns:1fr}
+.controls{position:relative}
+} */
